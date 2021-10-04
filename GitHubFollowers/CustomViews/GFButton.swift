@@ -1,5 +1,5 @@
 //
-//  GFBodyLabel.swift
+//  GFButton.swift
 //  GitHubFollowers
 //
 //  Created by AntonSobolev on 01.10.2021.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class GFBodyLabel: UILabel {
-    
+class GFButton: UIButton {
+
     // MARK: - Initializers
     
     override init(frame: CGRect) {
@@ -20,20 +20,20 @@ class GFBodyLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(textAligment: NSTextAlignment) {
+    init(backgroundColor: UIColor, title: String) {
         super.init(frame: .zero)
-        self.textAlignment = textAlignment
+        self.backgroundColor = backgroundColor
+        self.setTitle(title, for: .normal)
         configure()
     }
     
     // MARK: - Private Methods
     
     private func configure() {
-        textColor = .secondaryLabel
-        font = UIFont.preferredFont(forTextStyle: .body)
-        adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.75
-        lineBreakMode = .byWordWrapping
+        layer.cornerRadius = 10
+        setTitleColor(.white, for: .normal)
+        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         translatesAutoresizingMaskIntoConstraints = false
     }
 }
+

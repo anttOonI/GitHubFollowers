@@ -34,7 +34,7 @@ class SearchVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     // MARK: - Private Methods
@@ -51,7 +51,7 @@ class SearchVC: UIViewController {
         }
         
         let followeVC = FollowerListVC()
-        followeVC.userName = userNameTextField.text
+        followeVC.username = userNameTextField.text
         followeVC.title = userNameTextField.text
         navigationController?.pushViewController(followeVC, animated: true)
     }
