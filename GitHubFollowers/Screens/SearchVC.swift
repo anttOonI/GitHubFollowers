@@ -9,17 +9,15 @@ import UIKit
 
 class SearchVC: UIViewController {
     
-    // MARK: - Constants
-    
-    private let logoImageView = UIImageView()
-    private let userNameTextField = GFTextField()
-    private let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
-    
     // MARK: - Private Properties
     
     private var isUserNameEntered: Bool {
         return !userNameTextField.text!.isEmpty
     }
+    
+    private let logoImageView = UIImageView()
+    private let userNameTextField = GFTextField()
+    private let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
     
     // MARK: - Lifecycle
     

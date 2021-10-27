@@ -27,6 +27,13 @@ class GFButton: UIButton {
         configure()
     }
     
+    // MARK: - Public Methods
+    
+    func set(backgroundColor: UIColor, title: String) {
+        self.backgroundColor = backgroundColor
+        setTitle(title, for: .normal)
+    }
+    
     // MARK: - Private Methods
     
     private func configure() {
