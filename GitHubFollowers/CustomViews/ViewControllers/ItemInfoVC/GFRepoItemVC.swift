@@ -16,6 +16,10 @@ class GFRepoItemVC: GFItemInfoVC {
         configureItems()
     }
     
+    override func actionButtonTapped() {
+        delegate.didTapGithubProfile(for: user)
+    }
+    
     // MARK: - Private Methods
     
     private func configureItems() {
