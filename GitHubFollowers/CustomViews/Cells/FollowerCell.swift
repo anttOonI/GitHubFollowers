@@ -8,12 +8,15 @@
 import UIKit
 
 class FollowerCell: UICollectionViewCell {
-    static let reuseID = "FollowerCell"
     
     // MARK: - Constants
     
-    let avatarImageView = GFAvatarImageView(frame: .zero)
-    let usernameLabel = GFTitleLabel(aligment: .center, fontSize: 16)
+    static let reuseID = "FollowerCell"
+    
+    // MARK: - Private Properties
+    
+    private let avatarImageView = GFAvatarImageView(frame: .zero)
+    private let usernameLabel = GFTitleLabel(aligment: .center, fontSize: 16)
     
     // MARK: - Initializers
     
