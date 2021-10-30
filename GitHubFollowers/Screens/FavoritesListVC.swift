@@ -42,6 +42,7 @@ class FavoritesListVC: UIViewController {
         tableView.rowHeight = 80
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         
         tableView.register(FavoriteCell.self, forCellReuseIdentifier: FavoriteCell.reuseID)
     }
@@ -52,17 +53,21 @@ class FavoritesListVC: UIViewController {
             
             switch result {
             case .success(let favorites):
-                if favorites.isEmpty {
-                    self.showEmptyStateView(with: "No favorites\nAdd one on the follower screen", in: self.view)
-                } else {
-                    self.favorites = favorites
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        self.view.bringSubviewToFront(self.tableView)
-                    }
-                }
+                self.updateUI(with: favorites)
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+    }
+    
+    private func updateUI(with favorites: [Follower]) {
+        if favorites.isEmpty {
+            self.showEmptyStateView(with: "No favorites\nAdd one on the follower screen", in: self.view)
+        } else {
+            self.favorites = favorites
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.view.bringSubviewToFront(self.tableView)
             }
         }
     }
@@ -86,21 +91,19 @@ extension FavoritesListVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let favorite = favorites[indexPath.row]
-        let destVC = FollowerListVC()
-        destVC.username = favorite.login
-        destVC.title = favorite.login
+        let destVC = FollowerListVC(username: favorite.login)
         navigationController?.pushViewController(destVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        
-        let favorite = favorites[indexPath.row]
-        favorites.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .left)
-        
-        PersistenceManager.updateWith(favorite: favorite, actionType: .remove) { [unowned self] error in
-            guard let error = error else { return }
+
+        PersistenceManager.updateWith(favorite: favorites[indexPath.row], actionType: .remove) { [unowned self] error in
+            guard let error = error else {
+                favorites.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .left)
+                return
+            }
             self.presentGFAlertOnMainThread(title: "Unable to remove", message: error.rawValue, buttonTitle: "Ok")
         }
     }

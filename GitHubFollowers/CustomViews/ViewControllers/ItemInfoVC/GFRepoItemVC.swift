@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol GFRepoItemVCDelegate: AnyObject {
+    func didTapGithubProfile(for user: User)
+}
+
 class GFRepoItemVC: GFItemInfoVC {
+    
+    weak var delegate: GFRepoItemVCDelegate!
     
     // MARK: - Lifecycle
     
@@ -27,5 +33,4 @@ class GFRepoItemVC: GFItemInfoVC {
         itemInfoViewTwo.set(itemInfoType: .gists, with: user.publicGists)
         actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
     }
-    
 }

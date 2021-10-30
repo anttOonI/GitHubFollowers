@@ -9,16 +9,16 @@ import UIKit
 
 class GFUserInfoHeaderVC: UIViewController {
     
-    // MARK: - Constants
-    
-    let avatarImageView = GFAvatarImageView(frame: .zero)
-    let usernameLabel = GFTitleLabel(aligment: .left, fontSize: 34)
-    let nameLabel = GFSecondaryTitleLabel(fontSize: 18)
-    let locationImageView = UIImageView()
-    let locationLabel = GFSecondaryTitleLabel(fontSize: 18)
-    let bioLabel = GFBodyLabel(aligment: .left)
-    
     // MARK: - Private Properties
+    
+    private let avatarImageView = GFAvatarImageView(frame: .zero)
+    private let usernameLabel = GFTitleLabel(aligment: .left, fontSize: 34)
+    private let nameLabel = GFSecondaryTitleLabel(fontSize: 18)
+    private let locationImageView = UIImageView()
+    private let locationLabel = GFSecondaryTitleLabel(fontSize: 18)
+    private let bioLabel = GFBodyLabel(aligment: .left)
+    
+    // MARK: - Public Properties
     
     var user: User!
     
@@ -45,16 +45,24 @@ class GFUserInfoHeaderVC: UIViewController {
     // MARK: - Private Methods
     
     private func configureUIElements() {
-        avatarImageView.downloadImage(from: user.avatarUrl)
+        downloadAvatarImage()
         usernameLabel.text = user.login
         nameLabel.text = user.name ?? ""
         locationLabel.text = user.location ?? "No location"
         bioLabel.text = user.bio ?? "No bio available"
         bioLabel.numberOfLines = 3
         
-        locationImageView.image = UIImage(systemName: SFSymbols.location)
+        locationImageView.image = SFSymbols.location
         locationImageView.tintColor = .secondaryLabel
-        
+    }
+    
+    private func downloadAvatarImage() {
+        NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.avatarImageView.image = image
+            }
+        }
     }
     
     private func addSubview() {
@@ -100,7 +108,7 @@ class GFUserInfoHeaderVC: UIViewController {
             bioLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: textImagePadding),
             bioLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             bioLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bioLabel.heightAnchor.constraint(equalToConstant: 60)
+            bioLabel.heightAnchor.constraint(equalToConstant: 90)
         ])
     }
 }

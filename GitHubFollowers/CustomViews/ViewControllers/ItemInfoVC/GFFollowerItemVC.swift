@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol GFFollowerItemVCDelegate: AnyObject {
+    func didTapGetFollowers(for user: User)
+}
+
 class GFFollowerItemVC: GFItemInfoVC {
+    
+    weak var delegate: GFFollowerItemVCDelegate!
     
     // MARK: - Lifecycle
     
